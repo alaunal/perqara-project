@@ -1,5 +1,5 @@
-const baseUrl = process.env.BASE_URL;
-const API_KEY = process.env.API_KEY;
+const baseUrl = process.env.BASE_URL || "https://api.themoviedb.org/3/";
+const API_KEY = process.env.API_KEY || "0c1c58715cb9e8947be10590ed710ab3";
 
 export default (axios) => ({
   getPopular(page = 1) {
