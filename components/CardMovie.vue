@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col group">
-    <div class="relative w-full h-full aspect-9/14 bg-slate-700 rounded overflow-hidden mb-1">
+    <div class="relative w-full h-auto aspect-9/14 bg-slate-700 rounded overflow-hidden mb-1">
       <span
         class="
           absolute
@@ -18,11 +18,11 @@
           bg-gray-800/50
         "
       >
-        7.3
+        {{ data.vote_average }}
       </span>
       <img
-        src="https://talenthouse-res.cloudinary.com/image/upload/c_limit,w_750,h_1111/v1/articles/t43opdxqn1h29pk52vtr"
-        alt="movie"
+        :src="`https://image.tmdb.org/t/p/w500/${data.poster_path}`"
+        :alt="data.title"
         class="absolute w-full h-full object-cover top-0 left-0"
       />
       <div
@@ -45,12 +45,18 @@
       >
         <div class="text-center">
           <p class="text-gray-100 font-semibold font-body text-2xl">
-            <solid-star-icon class="text-yellow-500 h-8 w-auto inline-block align-sub" /> 7.3
+            <solid-star-icon class="text-yellow-500 h-8 w-auto inline-block align-sub" />
+            {{ data.vote_average }}
           </p>
-          <p class="my-8 font-semibold font-body text-2xl text-gray-100">ACTION</p>
+          <p
+            v-if="genres.length > 1"
+            class="my-8 font-semibold font-body text-2xl text-gray-100 uppercase"
+          >
+            {{ setGenre(data.genre_ids) }}
+          </p>
           <p>
             <NuxtLink
-              to="/movies/1"
+              :to="`/${route}/${data.id}`"
               class="
                 inline-flex
                 h-8
@@ -72,13 +78,15 @@
       </div>
     </div>
     <div class="">
-      <h3 class="font-display text-gray-100">Wonder Women</h3>
-      <p class="text-sm text-gray-500">2022</p>
+      <h3 class="font-display text-gray-100">{{ data.title }}</h3>
+      <p class="text-sm text-gray-500">{{ $dayjs(data.release_date).format("YYYY") }}</p>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "CardMovie",
   props: {
@@ -88,9 +96,24 @@ export default {
         return {};
       },
     },
+    route: {
+      type: String,
+      default() {
+        return "";
+      },
+    }
   },
   data() {
     return {};
+  },
+
+  computed: mapState("genre", ["genres"]),
+  methods: {
+    setGenre(item) {
+      const filterGenre = this.genres.filter((row) => row.id === item[0]);
+
+      return filterGenre.length > 0 ? filterGenre[0].name : "action";
+    },
   },
 };
 </script>

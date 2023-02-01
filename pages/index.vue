@@ -1,7 +1,7 @@
 <template>
   <div class="pt-16">
     <section class="relative pt-20 pb-12">
-      <HeroSlider />
+      <HeroSlider :data="movieUpComing" />
     </section>
     <section class="relative pt-20 pb-28">
       <div class="absolute w-full h-80 bg-header top-0 left-0"></div>
@@ -14,13 +14,48 @@
             </div>
           </div>
           <div>
-            <button class="inline-flex h-8 px-4 justify-center items-center font-body text-sm rounded-full bg-primary text-white mx-3">Popularity</button>
-            <button class="inline-flex h-8 px-4 justify-center items-center font-body text-sm rounded-full bg-body text-gray-100">Release Date</button>
+            <button
+              class="
+                inline-flex
+                h-8
+                px-4
+                justify-center
+                items-center
+                font-body
+                text-sm
+                rounded-full
+                mx-3
+              "
+              :class="tab === 'popular' ? 'bg-primary text-white' : 'bg-body text-gray-100'"
+              @click="getMoviePopular"
+            >
+              Popularity
+            </button>
+            <button
+              class="
+                inline-flex
+                h-8
+                px-4
+                justify-center
+                items-center
+                font-body
+                text-sm
+                rounded-full
+              "
+              :class="tab === 'releaseDate' ? 'bg-primary text-white' : 'bg-body text-gray-100'"
+              @click="getMovieReleaseDate"
+            >
+              Release Date
+            </button>
           </div>
         </div>
-        <div class="grid grid-cols-5 gap-x-6 gap-y-8">
-          <CardMovie />
-          <CardMovie />
+
+        <div v-if="tab === 'popular'" class="grid grid-cols-5 gap-x-6 gap-y-8">
+          <CardMovie v-for="item in moviePopular" :key="item.id" :data="item" :route="`movies`" />
+        </div>
+
+        <div v-if="tab === 'releaseDate'" class="grid grid-cols-5 gap-x-6 gap-y-8">
+          <CardMovie v-for="item in movieReleaseDate" :key="item.id" :data="item" :route="`movies`" />
         </div>
       </div>
     </section>
@@ -30,5 +65,74 @@
 <script>
 export default {
   name: "IndexPage",
+  data() {
+    return {
+      moviePopular: [],
+      moviePopularLoading: false,
+      movieUpComing: [],
+      movieUpComingLoading: false,
+      movieReleaseDate: [],
+      movieReleaseDateLoading: false,
+      tab: "popular",
+    };
+  },
+  created() {
+    this.getMoviePopular();
+    this.getMovieUpComing();
+  },
+  methods: {
+    async getMoviePopular() {
+      this.tab = "popular";
+
+      if (this.moviePopular.length < 1) {
+        this.moviePopularLoading = true;
+        try {
+          const { data } = await this.$api.movies.getPopular();
+
+          if (data.results.length > 0) {
+            this.moviePopular = data.results;
+          }
+
+          this.moviePopularLoading = false;
+        } catch (error) {
+          this.moviePopularLoading = false;
+        }
+      }
+    },
+    async getMovieReleaseDate() {
+      this.tab = "releaseDate";
+
+      if (this.movieReleaseDate.length < 1) {
+        this.movieReleaseDateLoading = true;
+        try {
+          const { data } = await this.$api.movies.getReleaseDate();
+
+          if (data.results.length > 0) {
+            this.movieReleaseDate = data.results;
+          }
+
+          this.movieReleaseDateLoading = false;
+        } catch (error) {
+          this.movieReleaseDateLoading = false;
+        }
+      }
+    },
+    async getMovieUpComing() {
+      if (this.movieUpComing.length < 1) {
+        this.movieUpComingLoading = true;
+        try {
+          const { data } = await this.$api.movies.getUpComing();
+
+          if (data.results.length > 0) {
+            this.movieUpComing = data.results.slice(0, 5);
+          }
+
+          this.movieUpComingLoading = false;
+        } catch (error) {
+          this.movieUpComingLoading = false;
+        }
+      }
+    },
+  },
 };
 </script>
