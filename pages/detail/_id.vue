@@ -1,11 +1,11 @@
 <template>
-  <div class="pt-16">
-    Login
+  <div>
+
   </div>
 </template>
 
 <script>
 export default {
-  name: "TvShowsPage",
+  name: "MovieDetailPage",
 };
 </script>

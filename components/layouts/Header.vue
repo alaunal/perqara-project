@@ -1,10 +1,15 @@
 <template>
-  <header class="fixed top-0 left-0 w-full bg-header h-16 flex items-center justify-center z-10">
+  <header
+    class="fixed top-0 left-0 w-full h-16 flex items-center justify-center z-10 transition-colors duration-300"
+    :class="scrollPosition > 48 ? 'bg-header' : 'header'"
+  >
     <div class="container mx-auto">
       <div class="flex w-full justify-between items-center">
         <div class="flex items-center flex-1">
           <div>
-            <img :src="logoMovieTime" alt="logo" class="h-8 inline-block" />
+            <NuxtLink to="/">
+              <img :src="logoMovieTime" alt="logo" class="h-8 inline-block" />
+            </NuxtLink>
           </div>
           <div class="px-10 flex-1">
             <div class="relative w-full">
@@ -34,16 +39,48 @@
         <div>
           <nav>
             <a
-              href=""
-              class="
-                text-gray-100
-                mx-5
-                hover:text-gray-200
-                font-body
-                text-sm
-              "
+              v-on-clickaway="away"
+              href="javascript:;"
+              class="text-gray-100 mx-5 hover:text-gray-200 font-body text-sm relative"
+              @click="toggle"
             >
               <solid-view-grid-icon class="w-5 h-auto inline-block mr-1" /> Categories
+
+              <div
+                class="absolute left-0 top-8 bg-white rounded z-10 py-2 min-w-[10rem]"
+                :class="categoryToggle ? 'block' : 'hidden'"
+              >
+                <nav>
+                  <NuxtLink
+                    to="/"
+                    class="
+                      block
+                      px-3
+                      py-1
+                      font-body
+                      text-sm
+                      font-medium
+                      text-gray-800
+                      hover:bg-gray-50
+                    "
+                    >Action</NuxtLink
+                  >
+                  <NuxtLink
+                    to="/"
+                    class="
+                      block
+                      px-3
+                      py-1
+                      font-body
+                      text-sm
+                      font-medium
+                      text-gray-800
+                      hover:bg-gray-50
+                    "
+                    >Action</NuxtLink
+                  >
+                </nav>
+              </div>
             </a>
             <NuxtLink to="/Movies" class="text-gray-100 mx-5 hover:text-gray-200 font-body text-sm">
               Movies
@@ -65,14 +102,37 @@
 </template>
 
 <script>
+import { mixin as clickaway } from "vue-clickaway";
 import logoMovieTime from "@/assets/images/MoovieTime-Logo.svg";
 
 export default {
   name: "HeaderComponent",
+  mixins: [clickaway],
+  provide() {
+    return {
+      categoryToggle: this.categoryToggle,
+    };
+  },
   data() {
     return {
       logoMovieTime,
+      categoryToggle: false,
+      scrollPosition: null,
     };
+  },
+  mounted() {
+    window.addEventListener("scroll", this.updateScroll);
+  },
+  methods: {
+    toggle() {
+      this.categoryToggle = !this.categoryToggle;
+    },
+    away() {
+      this.categoryToggle = false;
+    },
+    updateScroll() {
+      this.scrollPosition = window.scrollY;
+    },
   },
 };
 </script>

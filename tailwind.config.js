@@ -8,7 +8,6 @@ module.exports = {
     "./nuxt.config.{js,ts}",
   ],
   theme: {
-
     extend: {
       fontFamily: {
         display: ['"Montserrat"', "sans-serif"],
@@ -23,10 +22,16 @@ module.exports = {
         footer: "#15191E",
       },
       aspectRatio: {
-        '4/3': '4 / 3',
-        '9/14': '9 / 14',
+        "4/3": "4 / 3",
+        "9/14": "9 / 14",
+      },
+      zIndex: {
+        1: "1",
       },
     },
+    minWidth: {
+      '10rem': '10rem',
+    }
   },
   plugins: [require("@tailwindcss/forms")],
 };

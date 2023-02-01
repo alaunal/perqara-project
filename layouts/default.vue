@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header />
-    <main class="min-h-screen relative bg-body w-full pt-16">
+    <main class="min-h-screen relative bg-body w-full">
       <Nuxt />
     </main>
     <Footer />

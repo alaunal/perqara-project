@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pt-16">
     <section class="relative pt-20 pb-12">
       <HeroSlider />
     </section>

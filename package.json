@@ -27,6 +27,7 @@
     "postcss-nested": "^6.0.0",
     "tailwindcss": "^3.2.4",
     "vue": "^2.7.10",
+    "vue-clickaway": "^2.2.2",
     "vue-server-renderer": "^2.7.10",
     "vue-template-compiler": "^2.7.10",
     "vue-tiny-slider": "^0.1.39"
