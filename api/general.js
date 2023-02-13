@@ -9,6 +9,6 @@ export default (axios) => ({
     return axios.get(`${baseUrl}genre/tv/list?api_key=${API_KEY}&language=en-US`);
   },
   getKeywords(keyword) {
-    return axios.get(`${baseUrl}search/keyword?api_key=${API_KEY}&page=1&query=${keyword}`);
+    return axios.get(`${baseUrl}search/movie?api_key=${API_KEY}&page=1&query=${keyword}`);
   },
 });

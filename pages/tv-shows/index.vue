@@ -40,8 +40,8 @@
               </div>
               <div v-if="genres.length > 0" class="px-4 py-3">
                 <div
-                  v-for="item in genres"
-                  :key="item.id"
+                  v-for="(item, idx) in genres"
+                  :key="idx"
                   class="flex justify-between items-center py-1"
                 >
                   <label :for="`check-${item.id}`" class="font-body text-sm text-gray-100">{{
@@ -70,7 +70,16 @@
             </div>
           </div>
           <div class="flex-1 pl-8">
-            <div v-if="tvShows.length > 0" class="grid grid-cols-4 gap-x-6 gap-y-8">
+            <div v-if="tvShowsLoading" class="grid grid-cols-4 gap-x-6 gap-y-8 animate-pulse">
+              <div class="relative w-full h-auto aspect-9/14 bg-slate-700 rounded"></div>
+              <div class="relative w-full h-auto aspect-9/14 bg-slate-700 rounded"></div>
+              <div class="relative w-full h-auto aspect-9/14 bg-slate-700 rounded"></div>
+            </div>
+
+            <div
+              v-if="tvShows.length > 0 && tvShowsLoading === false"
+              class="grid grid-cols-4 gap-x-6 gap-y-8"
+            >
               <CardMovie v-for="item in tvShows" :key="item.id" :data="item" :route="`tv-shows`" />
             </div>
 
@@ -102,7 +111,6 @@
 </template>
 
 <script>
-
 export default {
   name: "MoviePage",
   data() {
@@ -142,8 +150,7 @@ export default {
         if (data.genres.length > 0) {
           this.genres.push(...data.genres);
         }
-      } catch (error) {
-      }
+      } catch (error) {}
     },
   },
 };

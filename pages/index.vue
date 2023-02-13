@@ -50,12 +50,33 @@
           </div>
         </div>
 
-        <div v-if="tab === 'popular'" class="grid grid-cols-5 gap-x-6 gap-y-8">
-          <CardMovie v-for="item in moviePopular" :key="item.id" :data="item" :route="`movies`" />
+        <div v-if="tab === 'popular'">
+          <div v-if="moviePopularLoading" class="grid grid-cols-5 gap-x-6 gap-y-8 animate-pulse">
+            <div class="relative w-full h-auto aspect-9/14 bg-slate-700 rounded"></div>
+            <div class="relative w-full h-auto aspect-9/14 bg-slate-700 rounded"></div>
+            <div class="relative w-full h-auto aspect-9/14 bg-slate-700 rounded"></div>
+          </div>
+
+          <div v-if="moviePopularLoading === false && moviePopular.length > 0" class="grid grid-cols-5 gap-x-6 gap-y-8">
+            <CardMovie v-for="item in moviePopular" :key="item.id" :data="item" :route="`movies`" />
+          </div>
         </div>
 
-        <div v-if="tab === 'releaseDate'" class="grid grid-cols-5 gap-x-6 gap-y-8">
-          <CardMovie v-for="item in movieReleaseDate" :key="item.id" :data="item" :route="`movies`" />
+        <div v-if="tab === 'releaseDate'">
+          <div v-if="movieReleaseDateLoading" class="grid grid-cols-5 gap-x-6 gap-y-8 animate-pulse">
+            <div class="relative w-full h-auto aspect-9/14 bg-slate-700 rounded"></div>
+            <div class="relative w-full h-auto aspect-9/14 bg-slate-700 rounded"></div>
+            <div class="relative w-full h-auto aspect-9/14 bg-slate-700 rounded"></div>
+          </div>
+
+          <div v-if="movieReleaseDateLoading === false && movieReleaseDate.length > 0" class="grid grid-cols-5 gap-x-6 gap-y-8">
+            <CardMovie
+              v-for="item in movieReleaseDate"
+              :key="item.id"
+              :data="item"
+              :route="`movies`"
+            />
+          </div>
         </div>
       </div>
     </section>

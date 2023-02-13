@@ -41,6 +41,7 @@
           justify-center
           items-center
           rounded
+          z-[1]
         "
       >
         <div class="text-center">
