@@ -1,7 +1,7 @@
 <template>
   <div class="pt-16">
     <section class="relative pt-20 pb-12">
-      <HeroSlider :data="movieUpComing" />
+      <HeroSlider v-if="movieUpComing.length > 0" :data="movieUpComing" />
     </section>
     <section class="relative pt-20 pb-28">
       <div class="absolute w-full h-80 bg-header top-0 left-0"></div>
@@ -86,12 +86,17 @@
 <script>
 export default {
   name: "IndexPage",
+  async asyncData({ $api }) {
+    const { data } = await $api.movies.getUpComing();
+
+    return {
+      movieUpComing: data.results.slice(0, 5),
+    }
+  },
   data() {
     return {
       moviePopular: [],
       moviePopularLoading: false,
-      movieUpComing: [],
-      movieUpComingLoading: false,
       movieReleaseDate: [],
       movieReleaseDateLoading: false,
       tab: "popular",
@@ -99,7 +104,7 @@ export default {
   },
   created() {
     this.getMoviePopular();
-    this.getMovieUpComing();
+    // this.getMovieUpComing();
   },
   methods: {
     async getMoviePopular() {
@@ -135,22 +140,6 @@ export default {
           this.movieReleaseDateLoading = false;
         } catch (error) {
           this.movieReleaseDateLoading = false;
-        }
-      }
-    },
-    async getMovieUpComing() {
-      if (this.movieUpComing.length < 1) {
-        this.movieUpComingLoading = true;
-        try {
-          const { data } = await this.$api.movies.getUpComing();
-
-          if (data.results.length > 0) {
-            this.movieUpComing = data.results.slice(0, 5);
-          }
-
-          this.movieUpComingLoading = false;
-        } catch (error) {
-          this.movieUpComingLoading = false;
         }
       }
     },
